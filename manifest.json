@@ -1,0 +1,19 @@
+{
+  "name": "GDConsola — practica GDScript",
+  "short_name": "GDConsola",
+  "description": "Consola interactiva en el navegador para practicar la sintaxis de GDScript: variables, condicionales, bucles, funciones, arrays y diccionarios, sin necesidad de instalar el motor Godot.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "id": "/GD22/",
+  "display": "standalone",
+  "background_color": "#0e1117",
+  "theme_color": "#0e1117",
+  "orientation": "any",
+  "lang": "es",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
