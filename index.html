@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GDConsola — practica GDScript</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#0e1117">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GDConsola">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <span class="brand-title">GD<span>Consola</span></span>
+      <span class="brand-sub">// subconjunto de GDScript · corre en tu navegador</span>
+    </div>
+    <button class="btn btn-run" id="runBtn">▶ Ejecutar <kbd>Ctrl+Enter</kbd></button>
+    <button class="btn btn-debug" id="debugBtn" title="Depurar paso a paso">🐢</button>
+    <button class="btn btn-scene" id="sceneBtn" title="Escena jugable (Character2D)">🎮</button>
+
+    <div class="menu-wrap" id="exercisesMenuWrap">
+      <button class="btn" id="exercisesToggleBtn">🎲 Ejercicios <span class="menu-caret">▾</span></button>
+      <div class="dropdown-panel" id="exercisesDropdown">
+        <select id="exerciseMode" class="btn" title="Modo de ejercicio">
+          <option value="write">✏️ Escribir código</option>
+          <option value="bug">🐞 Encuentra el error</option>
+          <option value="predict">🔮 Predice la salida</option>
+        </select>
+        <select id="exerciseTopic" class="btn" title="Tema de ejercicios">
+          <option value="">Ejercicios: elegir tema</option>
+        </select>
+        <select id="exerciseDifficulty" class="btn" title="Dificultad">
+          <option value="">Cualquier dificultad</option>
+          <option value="facil">🟢 Fácil</option>
+          <option value="medio">🟡 Medio</option>
+          <option value="dificil">🔴 Difícil</option>
+          <option value="experto">🟣 Experto</option>
+          <option value="maestro">⚫ Maestro</option>
+        </select>
+        <button class="btn" id="exerciseBtn">🎲 Nuevo ejercicio</button>
+      </div>
+    </div>
+
+    <div class="menu-wrap" id="moreMenuWrap">
+      <button class="btn" id="moreToggleBtn" title="Más opciones">⋯</button>
+      <div class="dropdown-panel" id="moreDropdown">
+        <select id="examples" class="btn" title="Cargar ejemplo">
+          <option value="">Cargar ejemplo…</option>
+        </select>
+        <button class="btn" id="symbolsBtn" title="Guía rápida de símbolos y operadores">⟡ Símbolos</button>
+        <button class="btn" id="condBtn" title="Chuleta de condiciones más usadas">🧮 Condicionales</button>
+        <button class="btn" id="clearBtn">Limpiar salida</button>
+        <button class="btn" id="clearCodeBtn">🗑 Limpiar código</button>
+      </div>
+    </div>
+
+    <div class="menu-wrap" id="shortcutsMenuWrap">
+      <button class="btn" id="shortcutsToggleBtn" title="Atajos táctiles">⌨️</button>
+      <div class="dropdown-panel dropdown-panel-grid" id="shortcutsDropdown">
+        <button class="btn" id="shortcutUndoBtn">↶ Deshacer</button>
+        <button class="btn" id="shortcutRedoBtn">↷ Rehacer</button>
+        <button class="btn" id="shortcutTabBtn">⇥ Tab</button>
+        <button class="btn" id="shortcutDuplicateBtn">⧉ Duplicar línea</button>
+        <button class="btn" id="shortcutCommentBtn"># Comentar</button>
+      </div>
+    </div>
+
+    <div class="menu-wrap" id="refMenuWrap">
+      <button class="btn" id="refToggleBtn" title="Sintaxis soportada">📖</button>
+      <div class="dropdown-panel dropdown-panel-ref" id="refDropdown">
+        <div class="ref-grid">
+          <div><code>var x = 5</code> variables</div>
+          <div><code>if / elif / else:</code> condicionales</div>
+          <div><code>for x in range(n):</code> bucles</div>
+          <div><code>while cond:</code> bucles</div>
+          <div><code>func nombre(a, b):</code> funciones</div>
+          <div><code>return</code> · <code>break</code> · <code>continue</code></div>
+          <div><code>print(a, b)</code> salida</div>
+          <div><code>[1, 2, 3]</code> arrays: <code>.append() .size() .has()</code></div>
+          <div><code>{"k": v}</code> diccionarios: <code>.keys() .values()</code></div>
+          <div><code>and / or / not</code> lógicos</div>
+          <div><code>x in [1,2,3]</code> · <code>x in "abc"</code> pertenece a</div>
+          <div><code>+= -= *= /=</code> asignación compuesta</div>
+          <div><code>"texto".to_upper()</code> strings</div>
+          <div><code>match valor: / _:</code> selección múltiple</div>
+          <div><code>a if cond else b</code> ternario</div>
+          <div><code>func f(a, b=5):</code> parámetros por defecto</div>
+          <div><code>"%s: %d" % [a, b]</code> formateo de strings</div>
+          <div><code>var a, b = [1, 2]</code> reparto de array</div>
+          <div><code>.map() .filter() .reduce()</code> con funciones</div>
+          <div><code>var x: int = 5</code> tipado estático</div>
+          <div><code>const NOMBRE = valor</code> constantes</div>
+          <div><code>enum Nombre { A, B, C }</code> enumeraciones</div>
+          <div><code>signal nombre</code> · <code>.connect() .emit()</code> señales</div>
+          <div><code>class Nombre: / extends</code> clases y herencia</div>
+          <div><code>func _init(): / self</code> constructor e instancia</div>
+          <div><code>Nombre.new()</code> instanciar una clase</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exercise-panel" id="exercisePanel">
+    <div class="exercise-head">
+      <span class="exercise-topic-pill" id="exerciseTopicLabel"></span>
+      <span class="exercise-diff-pill" id="exerciseDiffLabel"></span>
+      <span class="exercise-title" id="exerciseTitle"></span>
+      <span class="exercise-solved-badge" id="exerciseSolvedBadge" style="display:none;">✓ ya resuelto antes</span>
+    </div>
+    <p class="exercise-prompt" id="exercisePrompt"></p>
+    <div class="exercise-stats" id="exerciseStats">
+      <span id="statProgressText">✓ 0/0 resueltos</span>
+      <div class="exercise-progress-bar"><div class="exercise-progress-bar-fill" id="statProgressFill" style="width:0%"></div></div>
+      <span class="stat-streak" id="statStreak">🔥 racha 0</span>
+      <span id="statBest">mejor: 0</span>
+      <button class="reset-progress-link" id="resetProgressBtn">reiniciar progreso</button>
+    </div>
+    <div class="predict-options" id="predictOptions" style="display:none;"></div>
+    <div class="exercise-actions">
+      <button class="btn btn-verify" id="verifyBtn">✓ Verificar</button>
+      <button class="btn" id="nextExerciseBtn">🎲 Otro ejercicio</button>
+      <button class="btn btn-ghost" id="closeExerciseBtn">Cerrar</button>
+    </div>
+    <div class="exercise-result" id="exerciseResult"></div>
+  </div>
+
+  <div class="split">
+    <div class="pane pane-editor">
+      <div class="pane-head"><span class="file-dot"></span> script.gd</div>
+      <div class="editor-wrap">
+        <div class="gutter" id="gutter">1</div>
+        <div class="code-area" id="codeArea">
+          <pre class="highlight-layer" id="highlight" aria-hidden="true"><code id="highlightCode"></code></pre>
+          <div class="debug-line-highlight" id="debugLineHighlight" style="display:none;"></div>
+          <textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" title="Ctrl+D: seleccionar palabra (o saltar a la siguiente aparición)"></textarea>
+          <div class="autocomplete" id="autocomplete"></div>
+        </div>
+      </div>
+    </div>
+    <div class="pane pane-console">
+      <div class="pane-head">
+        <span class="file-dot"></span>
+        <span id="consolePaneLabel">salida</span>
+      </div>
+      <div class="console" id="console"></div>
+      <div class="debug-view" id="debugView" style="display:none;">
+        <div class="debug-step-controls">
+          <button class="btn" id="debugPrevBtn">◂ Anterior</button>
+          <span class="debug-step-count" id="debugStepCount">Paso 1/1</span>
+          <button class="btn" id="debugNextBtn">Siguiente ▸</button>
+          <button class="btn btn-ghost" id="debugExitBtn">Salir</button>
+        </div>
+        <div class="debug-vars" id="debugVars"></div>
+        <div class="debug-console-label">Consola hasta este paso:</div>
+        <div class="console debug-console" id="debugConsole"></div>
+        <div class="debug-error" id="debugError" style="display:none;"></div>
+      </div>
+      <div class="scene-view" id="sceneView" style="display:none;">
+        <div class="scene-controls">
+          <button class="btn btn-run" id="scenePlayBtn">▶ Jugar</button>
+          <button class="btn" id="sceneStopBtn" disabled>⏹ Detener</button>
+          <span class="scene-hint">← → o los botones táctiles · espacio/Saltar para saltar</span>
+          <button class="btn btn-ghost" id="sceneExitBtn">Salir</button>
+        </div>
+        <div class="scene-canvas-wrap">
+          <canvas class="scene-canvas" id="sceneCanvas" width="600" height="400"></canvas>
+          <div class="scene-touch-controls" id="sceneTouchControls">
+            <div class="scene-touch-move">
+              <button class="scene-touch-btn" id="sceneTouchLeft" title="Izquierda">◂</button>
+              <button class="scene-touch-btn" id="sceneTouchRight" title="Derecha">▸</button>
+            </div>
+            <button class="scene-touch-btn scene-touch-jump" id="sceneTouchJump" title="Saltar">⤒ Saltar</button>
+          </div>
+        </div>
+        <div class="scene-error" id="sceneError" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="symbolsOverlay">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="Símbolos y operadores">
+      <div class="modal-head">
+        <span>⟡ Símbolos y operadores</span>
+        <button class="modal-close" id="symbolsCloseBtn" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="sym-group-title">Comparación</div>
+        <div class="sym-grid">
+          <div><code>==</code></div><div>igual a</div>
+          <div><code>!=</code></div><div>distinto de</div>
+          <div><code>&lt;</code> <code>&gt;</code></div><div>menor / mayor que</div>
+          <div><code>&lt;=</code> <code>&gt;=</code></div><div>menor o igual / mayor o igual</div>
+        </div>
+        <div class="sym-group-title">Asignación</div>
+        <div class="sym-grid">
+          <div><code>=</code></div><div>asignar un valor</div>
+          <div><code>+=</code> <code>-=</code></div><div>sumar / restar y asignar</div>
+          <div><code>*=</code> <code>/=</code></div><div>multiplicar / dividir y asignar</div>
+        </div>
+        <div class="sym-group-title">Aritmética</div>
+        <div class="sym-grid">
+          <div><code>+</code> <code>-</code></div><div>suma / resta (o concatenar arrays/strings)</div>
+          <div><code>*</code> <code>/</code></div><div>multiplicación / división</div>
+          <div><code>%</code></div><div>módulo (resto) entre números</div>
+          <div><code>"%s %d" % [a, b]</code></div><div>formateo de strings (%s texto, %d entero, %f decimal, %% signo %)</div>
+        </div>
+        <div class="sym-group-title">Lógicos</div>
+        <div class="sym-grid">
+          <div><code>and</code></div><div>y lógico</div>
+          <div><code>or</code></div><div>o lógico</div>
+          <div><code>not</code></div><div>negación</div>
+        </div>
+        <div class="sym-group-title">Estructura</div>
+        <div class="sym-grid">
+          <div><code>:</code></div><div>abre un bloque (if, for, while, func, match, case)</div>
+          <div><code>,</code></div><div>separa elementos o argumentos</div>
+          <div><code>.</code></div><div>accede a un miembro o método (<code>x.append()</code>)</div>
+          <div><code>#</code></div><div>comentario de línea</div>
+          <div><code>_</code></div><div>comodín en <code>match</code> (cualquier otro caso)</div>
+        </div>
+        <div class="sym-group-title">Agrupadores</div>
+        <div class="sym-grid">
+          <div><code>()</code></div><div>llamar función o agrupar una expresión</div>
+          <div><code>[]</code></div><div>crear un Array o indexar (<code>arr[0]</code>)</div>
+          <div><code>{}</code></div><div>crear un Dictionary (<code>{"k": v}</code>)</div>
+          <div><code>"..."</code> <code>'...'</code></div><div>texto (String)</div>
+        </div>
+        <div class="sym-group-title">Expresiones especiales</div>
+        <div class="sym-grid">
+          <div><code>a if cond else b</code></div><div>operador ternario</div>
+        </div>
+        <div class="sym-group-title">Clases y señales</div>
+        <div class="sym-grid">
+          <div><code>class Nombre:</code></div><div>define una clase con campos (<code>var</code>) y métodos (<code>func</code>)</div>
+          <div><code>extends Base</code></div><div>dentro de una clase, hereda campos y métodos de otra</div>
+          <div><code>func _init(a, b):</code></div><div>constructor: se ejecuta al llamar <code>.new()</code></div>
+          <div><code>self</code></div><div>referencia a la instancia actual dentro de un método</div>
+          <div><code>Nombre.new(args)</code></div><div>crea una instancia de la clase</div>
+          <div><code>signal nombre</code></div><div>declara una señal (evento)</div>
+          <div><code>señal.connect(func)</code></div><div>conecta una función para que escuche la señal</div>
+          <div><code>señal.emit(args)</code></div><div>dispara la señal y llama a todas las funciones conectadas</div>
+        </div>
+        <div class="sym-group-title">Tipado y constantes</div>
+        <div class="sym-grid">
+          <div><code>var x: int = 5</code></div><div>anotación de tipo (informativa, no cambia el comportamiento)</div>
+          <div><code>func f(a: int) -> bool:</code></div><div>tipos de parámetros y de retorno</div>
+          <div><code>const NOMBRE = valor</code></div><div>constante: no se puede reasignar</div>
+          <div><code>enum Nombre { A, B, C }</code></div><div>enumeración con nombre; accede con <code>Nombre.A</code></div>
+          <div><code>enum { A, B, C }</code></div><div>enumeración anónima; sus miembros quedan como constantes globales</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="condOverlay">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="Condiciones más usadas">
+      <div class="modal-head">
+        <span>🧮 Condiciones más usadas</span>
+        <button class="modal-close" id="condCloseBtn" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="sym-group-title">Paridad</div>
+        <div class="sym-grid">
+          <div><code>n % 2 == 0</code></div><div>par</div>
+          <div><code>n % 2 != 0</code></div><div>impar</div>
+        </div>
+        <div class="sym-group-title">Múltiplos y divisibilidad</div>
+        <div class="sym-grid">
+          <div><code>n % 3 == 0</code></div><div>múltiplo de 3 (divisible entre 3)</div>
+          <div><code>n % k == 0</code></div><div>múltiplo de <code>k</code> (cualquier número)</div>
+          <div><code>n % k != 0</code></div><div>no es múltiplo de <code>k</code></div>
+          <div><code>n % 3 == 0 and n % 5 == 0</code></div><div>múltiplo de 3 y de 5 a la vez</div>
+          <div><code>n % 3 == 0 or n % 5 == 0</code></div><div>múltiplo de 3 o de 5</div>
+        </div>
+        <div class="sym-group-title">Signo</div>
+        <div class="sym-grid">
+          <div><code>n &gt; 0</code></div><div>positivo</div>
+          <div><code>n &lt; 0</code></div><div>negativo</div>
+          <div><code>n == 0</code></div><div>es cero</div>
+        </div>
+        <div class="sym-group-title">Rangos</div>
+        <div class="sym-grid">
+          <div><code>n &gt;= a and n &lt;= b</code></div><div>está dentro del rango [a, b]</div>
+          <div><code>n &lt; a or n &gt; b</code></div><div>está fuera del rango [a, b]</div>
+        </div>
+        <div class="sym-group-title">Texto (String)</div>
+        <div class="sym-grid">
+          <div><code>texto == ""</code></div><div>el texto está vacío</div>
+          <div><code>texto.length() == 0</code></div><div>otra forma de ver si está vacío</div>
+          <div><code>texto == "hola"</code></div><div>comparar si es exactamente igual</div>
+          <div><code>"a" in texto</code></div><div>el texto contiene esa letra/substring</div>
+        </div>
+        <div class="sym-group-title">Arrays</div>
+        <div class="sym-grid">
+          <div><code>arr.size() == 0</code></div><div>el array está vacío</div>
+          <div><code>elemento in arr</code></div><div>el array contiene ese elemento</div>
+          <div><code>arr.size() % 2 == 0</code></div><div>el array tiene una cantidad par de elementos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="interpreter.js"></script>
+<script src="debugger.js"></script>
+<script src="scene.js"></script>
+<script src="editor.js"></script>
+<script src="exercises-bug.js"></script>
+<script src="exercises-predict.js"></script>
+<script src="exercises.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
